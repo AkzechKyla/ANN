@@ -108,7 +108,7 @@ if __name__ == "__main__":
 
     # Training parameters
     learn_rate = 0.01
-    epoch_target = 1000
+    epoch_target = 10000
     target_error = 0.001
 
     # Type: 1 = SGD, 2 = Mini-batch SGD, 3 = Batch GD
@@ -126,3 +126,8 @@ if __name__ == "__main__":
     print(f"\nTrained in {epochs_done} epochs")
     print(f"Final Weights: W1 = {w1:.4f}, W2 = {w2:.4f}, B1 = {b1:.4f}")
     print(f"Final Error: {final_error:.6f}\n")
+
+    # Test Inputs
+    for input1, input2 in inputs:
+        output = execute_pe(input1, w1, input2, w2, b1)
+        print(f"Input: ({input1}, {input2}) → Output: {output:.4f}")
