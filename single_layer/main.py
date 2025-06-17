@@ -1,17 +1,28 @@
 import random
+import pandas as pd
+
+def load_data_from_excel(file_path):
+    df = pd.read_excel(file_path)
+    inputs = df[['input1', 'input2']].values.tolist()
+    targets = df['target'].values.tolist()
+    return inputs, targets
+
 
 # ReLU activation function
 def relu(x):
     return max(0, x)
 
+
 # Derivative of ReLU
 def relu_derivative(x):
     return 1 if x > 0 else 0
+
 
 # Function to compute the output of the perceptron
 def execute_pe(input1, w1, input2, w2, b1):
     net = (input1 * w1) + (input2 * w2) + b1
     return relu(net)
+
 
 def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_target, target_error, training_type=1):
     """
@@ -88,16 +99,9 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
 
 
 if __name__ == "__main__":
-    # Sample training data (each tuple: input1, input2)
-    inputs = [
-        (-1.0, -1.0),
-        (-1.0, 1.0),
-        (1.0, -1.0),
-        (1.0, 1.0)
-    ]
-
-    # Corresponding target outputs = NAND gate
-    targets = [1.0, 1.0, 1.0, -1.0]
+    # Load data from Excel
+    excel_file = "training_data.xlsx"
+    inputs, targets = load_data_from_excel(excel_file)
 
     # Initial weights and bias
     w1_init = random.uniform(-1, 1)
@@ -110,9 +114,7 @@ if __name__ == "__main__":
     learn_rate = 0.01
     epoch_target = 10000
     target_error = 0.001
-
-    # Type: 1 = SGD, 2 = Mini-batch SGD, 3 = Batch GD
-    training_type = 3
+    training_type = 3 # Type: 1 = SGD, 2 = Mini-batch SGD, 3 = Batch GD
 
     # Train the model
     w1, w2, b1, epochs_done, final_error = train_ann(
@@ -122,12 +124,11 @@ if __name__ == "__main__":
         training_type
     )
 
-    # Show final results
     print(f"\nTrained in {epochs_done} epochs")
     print(f"Final Weights: W1 = {w1:.4f}, W2 = {w2:.4f}, B1 = {b1:.4f}")
     print(f"Final Error: {final_error:.6f}\n")
 
-    # Test Inputs
+    # Test all inputs
     for input1, input2 in inputs:
         output = execute_pe(input1, w1, input2, w2, b1)
         print(f"Input: ({input1}, {input2}) → Output: {output:.4f}")
