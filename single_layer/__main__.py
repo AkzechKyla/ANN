@@ -1,3 +1,5 @@
+import random
+
 # ReLU activation function
 def relu(x):
     return max(0, x)
@@ -98,7 +100,11 @@ if __name__ == "__main__":
     targets = [1.0, 1.0, 1.0, -1.0]
 
     # Initial weights and bias
-    w1_init, w2_init, b1_init = 0.1, 0.2, 0.0
+    w1_init = random.uniform(-1, 1)
+    w2_init = random.uniform(-1, 1)
+    b1_init = random.uniform(-1, 1)
+
+    print(f"\nInitial Weights: W1 = {w1_init:.4f}, W2 = {w2_init:.4f}, B1 = {b1_init:.4f}")
 
     # Training parameters
     learn_rate = 0.01
