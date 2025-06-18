@@ -134,4 +134,5 @@ if __name__ == "__main__":
     # Test all inputs
     for input1, input2 in inputs:
         output = execute_pe(input1, w1, input2, w2, b1)
-        print(f"Input: ({input1}, {input2}) → Output: {output:.4f}")
+        binary_output = 1 if output >= 0.5 else 0
+        print(f"Input: ({input1}, {input2}) → Output: {binary_output:.4f}")
