@@ -1,4 +1,5 @@
 import random
+import math
 import pandas as pd
 
 def load_data_from_excel(file_path):
@@ -6,6 +7,14 @@ def load_data_from_excel(file_path):
     inputs = df[['input1', 'input2']].values.tolist()
     targets = df['target'].values.tolist()
     return inputs, targets
+
+
+def sigmoid(x):
+    return 1 / (1 + math.exp(-x))
+
+
+def sigmoid_derivative(output):
+    return output * (1 - output)
 
 
 # ReLU activation function
@@ -25,12 +34,6 @@ def execute_pe(input1, w1, input2, w2, b1):
 
 
 def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_target, target_error, training_type=1):
-    """
-    Trains a simple ANN with ReLU using:
-    training_type = 1: SGD
-    training_type = 2: Mini-batch SGD (not implemented differently here)
-    training_type = 3: Batch GD
-    """
     w1, w2, b1 = w1_init, w2_init, b1_init
     epoch = 0
     error = 1.0
