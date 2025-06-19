@@ -30,7 +30,8 @@ def relu_derivative(x):
 # Function to compute the output of the perceptron
 def execute_pe(input1, w1, input2, w2, b1):
     net = (input1 * w1) + (input2 * w2) + b1
-    return relu(net)
+    return sigmoid(net)
+    # return relu(net)
 
 
 def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_target, target_error, training_type=1):
@@ -49,7 +50,8 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
                 error = 0.5 * (target - output) ** 2
 
                 dE_dOut = output - target
-                dOut_dNet = relu_derivative(output)
+                dOut_dNet = sigmoid_derivative(output)
+                # dOut_dNet = relu_derivative(output)
 
                 # Gradients
                 dE_dW1 = dE_dOut * dOut_dNet * input1
@@ -77,7 +79,8 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
 
                 output = execute_pe(input1, w1, input2, w2, b1)
                 dE_dOut = output - target
-                dOut_dNet = relu_derivative(output)
+                dOut_dNet = sigmoid_derivative(output)
+                # dOut_dNet = relu_derivative(output)
 
                 dw1_total += dE_dOut * dOut_dNet * input1
                 dw2_total += dE_dOut * dOut_dNet * input2
@@ -106,18 +109,34 @@ if __name__ == "__main__":
     excel_file = "training_data.xlsx"
     inputs, targets = load_data_from_excel(excel_file)
 
-    # Initial weights and bias
+    # Randomize initial weights and bias (uncomment to use random values)
     w1_init = random.uniform(-1, 1)
     w2_init = random.uniform(-1, 1)
     b1_init = random.uniform(-1, 1)
 
+    # Initial Weights and Bias (uncomment to use fixed values)
+    # w1_init = -1.4299
+    # w2_init = -1.4551
+    # b1_init = 2.3519
+
     print(f"\nInitial Weights: W1 = {w1_init:.4f}, W2 = {w2_init:.4f}, B1 = {b1_init:.4f}")
 
-    # Training parameters
+    """
+    Training parameters
+    learn_rate = 0.005 (if sigmoid is used), 0.01 (if ReLU is used)
+    epoch_target = 100000000 (for long training), 10000 (for quick testing)
+    target_error = 0.000000000000001 (for high precision), 0.001 (for quick testing)
+    training_type = 1 (SGD), 2 (Mini-batch SGD), 3 (Batch Gradient Descent)
+    """
     learn_rate = 0.01
     epoch_target = 10000
     target_error = 0.001
-    training_type = 3 # Type: 1 = SGD, 2 = Mini-batch SGD, 3 = Batch GD
+    training_type = 3
+
+    print(f"\nTraining Parameters:")
+    print(f"Learning Rate: {learn_rate}")
+    print(f"Epoch Target: {epoch_target}")
+    print(f"Target Error: {target_error}")
 
     # Train the model
     w1, w2, b1, epochs_done, final_error = train_ann(
@@ -130,9 +149,10 @@ if __name__ == "__main__":
     print(f"\nTrained in {epochs_done} epochs")
     print(f"Final Weights: W1 = {w1:.4f}, W2 = {w2:.4f}, B1 = {b1:.4f}")
     print(f"Final Error: {final_error:.6f}\n")
+    print("Threshold: 0.5\n")
 
     # Test all inputs
     for input1, input2 in inputs:
         output = execute_pe(input1, w1, input2, w2, b1)
         binary_output = 1 if output >= 0.5 else 0
-        print(f"Input: ({input1}, {input2}) → Output: {binary_output:.4f}")
+        print(f"Input: ({input1}, {input2}) → Output: {output:.4f} → {binary_output:.4f}")
