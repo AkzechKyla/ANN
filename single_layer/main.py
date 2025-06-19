@@ -30,8 +30,8 @@ def relu_derivative(x):
 # Function to compute the output of the perceptron
 def execute_pe(input1, w1, input2, w2, b1):
     net = (input1 * w1) + (input2 * w2) + b1
-    return sigmoid(net)
-    # return relu(net)
+    # return sigmoid(net)
+    return relu(net)
 
 
 def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_target, target_error, training_type=1):
@@ -50,8 +50,8 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
                 error = 0.5 * (target - output) ** 2
 
                 dE_dOut = output - target
-                dOut_dNet = sigmoid_derivative(output)
-                # dOut_dNet = relu_derivative(output)
+                # dOut_dNet = sigmoid_derivative(output)
+                dOut_dNet = relu_derivative(output)
 
                 # Gradients
                 dE_dW1 = dE_dOut * dOut_dNet * input1
@@ -79,8 +79,8 @@ def train_ann(inputs, targets, w1_init, w2_init, b1_init, learn_rate, epoch_targ
 
                 output = execute_pe(input1, w1, input2, w2, b1)
                 dE_dOut = output - target
-                dOut_dNet = sigmoid_derivative(output)
-                # dOut_dNet = relu_derivative(output)
+                # dOut_dNet = sigmoid_derivative(output)
+                dOut_dNet = relu_derivative(output)
 
                 dw1_total += dE_dOut * dOut_dNet * input1
                 dw2_total += dE_dOut * dOut_dNet * input2
